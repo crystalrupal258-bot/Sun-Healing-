@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Shanti Healing Studio</title>
+<meta name="description" content="Book healing sessions and shop healing products" />
+<meta name="theme-color" content="#17302E" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="icon-192.png" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Shanti Healing" />
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap');
+  :root{
+    --sand:#F6F1E6; --deep:#17302E; --deep2:#0F2422; --gold:#D79A3C; --sage:#7C9A82; --ink:#1F2A28; --line:#E4DBC6;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; font-family:'Work Sans',sans-serif; background:var(--sand); color:var(--ink); }
+  .display{ font-family:'Fraunces',serif; }
+  .header{ position:sticky; top:0; z-index:20; background:var(--deep); color:#F6F1E6; display:flex; align-items:center; justify-content:space-between; padding:14px 20px; }
+  .brand{ font-family:'Fraunces',serif; font-size:1.1rem; font-weight:600; letter-spacing:0.01em; }
+  .nav{ display:flex; gap:18px; align-items:center; font-size:0.9rem; }
+  .nav a{ color:#F6F1E6; text-decoration:none; opacity:0.85; }
+  .nav a:hover{ opacity:1; }
+  .cart-btn{ position:relative; background:none; border:none; color:#F6F1E6; cursor:pointer; padding:4px; font-size:1.2rem; }
+  .cart-badge{ position:absolute; top:-4px; right:-6px; background:var(--gold); color:var(--deep2); font-size:0.65rem; font-weight:600; border-radius:999px; padding:1px 6px; }
+  .hero{ position:relative; background:radial-gradient(ellipse at 50% 30%,var(--deep2),var(--deep)); color:#F6F1E6; padding:64px 20px 72px; text-align:center; overflow:hidden; }
+  .rings{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none; }
+  .ring{ position:absolute; top:50%; left:50%; border:1px solid rgba(215,154,60,0.35); border-radius:50%; transform:translate(-50%,-50%); animation: breathe 6s ease-in-out infinite; }
+  .ring.r1{ width:180px; height:180px; animation-delay:0s; }
+  .ring.r2{ width:280px; height:280px; animation-delay:0.6s; }
+  .ring.r3{ width:380px; height:380px; animation-delay:1.2s; }
+  @keyframes breathe{ 0%,100%{ transform:translate(-50%,-50%) scale(0.9); opacity:0.15; } 50%{ transform:translate(-50%,-50%) scale(1.08); opacity:0.5; } }
+  @media (prefers-reduced-motion: reduce){ .ring{ animation:none; opacity:0.25; } }
+  .hero-inner{ position:relative; z-index:1; max-width:520px; margin:0 auto; }
+  .eyebrow{ display:inline-flex; align-items:center; gap:6px; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
+  .hero h1{ font-size:2.1rem; line-height:1.15; margin:0 0 12px; }
+  .hero p{ font-size:1rem; opacity:0.85; margin:0 0 26px; }
+  .hero-ctas{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .btn{ font-family:'Work Sans',sans-serif; font-weight:600; font-size:0.9rem; padding:11px 20px; border-radius:8px; border:none; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:6px; }
+  .btn-gold{ background:var(--gold); color:var(--deep2); }
+  .btn-ghost{ background:transparent; color:#F6F1E6; border:1px solid rgba(246,241,230,0.4); }
+  .btn-disabled{ background:#cfc7b3; color:#8a8370; cursor:not-allowed; }
+  .section{ padding:52px 20px; max-width:960px; margin:0 auto; }
+  .section-head{ text-align:center; margin-bottom:32px; }
+  .section-head .label{ font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--sage); font-weight:600; }
+  .section-head h2{ font-size:1.6rem; margin:6px 0 0; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:18px; }
+  .card{ background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px; display:flex; flex-direction:column; gap:8px; }
+  .card h3{ font-family:'Fraunces',serif; font-size:1.1rem; margin:0; }
+  .meta{ font-size:0.8rem; color:#6b6154; display:flex; gap:10px; align-items:center; }
+  .price{ font-weight:600; color:var(--deep); margin-top:4px; }
+  .desc{ font-size:0.85rem; color:#5c5548; flex:1; }
+  .card .btn{ align-self:flex-start; margin-top:6px; }
+  .booking-panel{ background:#fff; border:1px solid var(--line); border-left:4px solid var(--gold); border-radius:12px; padding:24px; margin-top:28px; }
+  .booking-panel h3{ font-family:'Fraunces',serif; margin:0 0 4px; }
+  .form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px; }
+  .field{ display:flex; flex-direction:column; gap:5px; }
+  .field.full{ grid-column:1/-1; }
+  .field label{ font-size:0.78rem; font-weight:600; color:#544d40; display:flex; align-items:center; gap:5px; }
+  .field input{ border:1px solid var(--line); border-radius:8px; padding:9px 11px; font-family:'Work Sans',sans-serif; font-size:0.9rem; }
+  .slots{ display:flex; flex-wrap:wrap; gap:8px; grid-column:1/-1; }
+  .slot{ border:1px solid var(--line); background:#fff; border-radius:999px; padding:7px 14px; font-size:0.82rem; cursor:pointer; }
+  .slot.active{ background:var(--deep); color:#fff; border-color:var(--deep); }
+  .booking-actions{ margin-top:18px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .hint{ font-size:0.78rem; color:#83796a; }
+  .emoji-tile{ font-size:2rem; }
+  .cart-overlay{ position:fixed; inset:0; background:rgba(15,36,34,0.4); z-index:30; display:flex; justify-content:flex-end; }
+  .cart-drawer{ width:min(360px,100%); background:var(--sand); height:100%; padding:20px; overflow-y:auto; }
+  .cart-drawer h3{ font-family:'Fraunces',serif; display:flex; justify-content:space-between; align-items:center; }
+  .cart-item{ display:flex; justify-content:space-between; align-items:center; gap:8px; padding:10px 0; border-bottom:1px solid var(--line); }
+  .qty-ctrl{ display:flex; align-items:center; gap:8px; }
+  .qty-ctrl button{ border:1px solid var(--line); background:#fff; border-radius:6px; width:26px; height:26px; cursor:pointer; }
+  .cart-total{ display:flex; justify-content:space-between; font-weight:600; margin-top:14px; padding-top:14px; border-top:1px solid var(--line); }
+  .sticky-bar{ position:fixed; bottom:0; left:0; right:0; background:var(--deep); color:#fff; padding:12px 20px; display:flex; justify-content:space-between; align-items:center; z-index:15; }
+  .install-banner{ position:fixed; bottom:0; left:0; right:0; background:var(--gold); color:var(--deep2); padding:10px 20px; display:flex; justify-content:space-between; align-items:center; gap:10px; z-index:16; font-size:0.85rem; }
+  .install-banner button{ border:none; background:var(--deep2); color:#fff; padding:7px 14px; border-radius:6px; font-weight:600; cursor:pointer; }
+  footer{ background:var(--deep2); color:#c9c2b2; text-align:center; padding:28px 20px; font-size:0.8rem; }
+  footer .brand{ color:#F6F1E6; margin-bottom:4px; }
+  @media (max-width:480px){ .form-grid{ grid-template-columns:1fr; } .hero h1{ font-size:1.7rem; } }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState } = React;
+
+const BRAND = "Shanti Healing Studio";
+const TAGLINE = "Book a session. Bring healing home.";
+// Replace with the real WhatsApp number (country code + number, digits only, no + or spaces)
+const WHATSAPP_NUMBER = "911234567890";
+
+const SERVICES = [
+  { id: 's1', name: 'Reiki Healing', duration: '45 min', price: 800, desc: 'Gentle energy work to release blocked tension and restore balance.' },
+  { id: 's2', name: 'Sound Bath', duration: '60 min', price: 1000, desc: 'Himalayan bowls and chimes to settle a busy nervous system.' },
+  { id: 's3', name: 'Guided Meditation', duration: '30 min', price: 500, desc: 'One-on-one breathwork and stillness practice, in person or online.' },
+  { id: 's4', name: 'Chakra Balancing', duration: '50 min', price: 900, desc: "Realign the body's energy centers through touch and intention." },
+];
+
+const PRODUCTS = [
+  { id: 'p1', name: 'Rose Quartz Crystal', price: 350, emoji: '🌸' },
+  { id: 'p2', name: 'Sandalwood Incense (pack of 20)', price: 150, emoji: '🕯️' },
+  { id: 'p3', name: 'Healing Herbal Oil', price: 450, emoji: '🌿' },
+  { id: 'p4', name: 'Tibetan Singing Bowl', price: 1800, emoji: '🎐' },
+  { id: 'p5', name: 'Amethyst Bracelet', price: 600, emoji: '💜' },
+  { id: 'p6', name: 'Meditation Cushion', price: 1200, emoji: '🧘' },
+];
+
+const TIME_SLOTS = ['9:00 AM', '10:30 AM', '12:00 PM', '2:00 PM', '3:30 PM', '5:00 PM'];
+
+function HealingApp() {
+  const [cart, setCart] = useState([]);
+  const [showCart, setShowCart] = useState(false);
+  const [bookingService, setBookingService] = useState(null);
+  const [form, setForm] = useState({ name: '', phone: '', date: '', time: '' });
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstall, setShowInstall] = useState(false);
+
+  React.useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstall(true);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  async function handleInstall() {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    setDeferredPrompt(null);
+    setShowInstall(false);
+  }
+
+  const cartCount = cart.reduce((s, i) => s + i.qty, 0);
+  const cartTotal = cart.reduce((s, i) => s + i.qty * i.price, 0);
+
+  function addToCart(product) {
+    setCart(prev => {
+      const existing = prev.find(i => i.id === product.id);
+      if (existing) return prev.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i);
+      return [...prev, { ...product, qty: 1 }];
+    });
+  }
+
+  function changeQty(id, delta) {
+    setCart(prev => prev.map(i => i.id === id ? { ...i, qty: i.qty + delta } : i).filter(i => i.qty > 0));
+  }
+
+  function checkoutLink() {
+    const lines = cart.map(i => `- ${i.name} x${i.qty} = Rs.${i.qty * i.price}`).join('\n');
+    const msg = `Hi ${BRAND}, I'd like to order:\n${lines}\n\nTotal: Rs.${cartTotal}`;
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  }
+
+  function bookingLink() {
+    const msg = `Hi ${BRAND}, I'd like to book:\nService: ${bookingService.name}\nName: ${form.name}\nPhone: ${form.phone}\nDate: ${form.date}\nTime: ${form.time}`;
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+  }
+
+  const bookingReady = bookingService && form.name && form.phone && form.date && form.time;
+
+  return (
+    <div>
+      <header className="header">
+        <div className="brand">{BRAND}</div>
+        <nav className="nav">
+          <a href="#services">Book</a>
+          <a href="#shop">Shop</a>
+          <button className="cart-btn" onClick={() => setShowCart(true)} aria-label="Open cart">
+            🛍️
+            {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+          </button>
+        </nav>
+      </header>
+
+      <section className="hero">
+        <div className="rings">
+          <div className="ring r1"></div>
+          <div className="ring r2"></div>
+          <div className="ring r3"></div>
+        </div>
+        <div className="hero-inner">
+          <div className="eyebrow">✨ Healing sessions & products</div>
+          <h1 className="display">{TAGLINE}</h1>
+          <p>Reiki, sound healing, meditation and chakra work — plus the crystals, oils and tools to continue your practice at home.</p>
+          <div className="hero-ctas">
+            <a href="#services" className="btn btn-gold">Book a session</a>
+            <a href="#shop" className="btn btn-ghost">Browse products</a>
+          </div>
+        </div>
+      </section>
+
+      <section className="section" id="services">
+        <div className="section-head">
+          <div className="label">Sessions</div>
+          <h2 className="display">Choose a healing session</h2>
+        </div>
+        <div className="grid">
+          {SERVICES.map(s => (
+            <div className="card" key={s.id}>
+              <h3>{s.name}</h3>
+              <div className="meta">⏰ {s.duration} &nbsp;•&nbsp; ₹{s.price}</div>
+              <p className="desc">{s.desc}</p>
+              <button className="btn btn-gold" onClick={() => { setBookingService(s); setForm(f => ({ ...f, time: '' })); }}>
+                Book this session
+              </button>
+            </div>
+          ))}
+        </div>
+
+        {bookingService && (
+          <div className="booking-panel">
+            <h3>Booking: {bookingService.name}</h3>
+            <div className="hint">{bookingService.duration} · ₹{bookingService.price}</div>
+            <div className="form-grid">
+              <div className="field">
+                <label>👤 Your name</label>
+                <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Full name" />
+              </div>
+              <div className="field">
+                <label>📞 Phone number</label>
+                <input value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} placeholder="10-digit number" />
+              </div>
+              <div className="field">
+                <label>📅 Preferred date</label>
+                <input type="date" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))} />
+              </div>
+              <div className="field">
+                <label>⏰ Time slot</label>
+              </div>
+              <div className="slots">
+                {TIME_SLOTS.map(t => (
+                  <button key={t} type="button" className={`slot ${form.time === t ? 'active' : ''}`} onClick={() => setForm(f => ({ ...f, time: t }))}>
+                    {t}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="booking-actions">
+              {bookingReady ? (
+                <a className="btn btn-gold" href={bookingLink()} target="_blank" rel="noopener noreferrer">
+                  💬 Confirm via WhatsApp
+                </a>
+              ) : (
+                <span className="btn btn-disabled">💬 Confirm via WhatsApp</span>
+              )}
+              <span className="hint">Fill in every field to send your booking request.</span>
+            </div>
+          </div>
+        )}
+      </section>
+
+      <section className="section" id="shop">
+        <div className="section-head">
+          <div className="label">Shop</div>
+          <h2 className="display">Healing products</h2>
+        </div>
+        <div className="grid">
+          {PRODUCTS.map(p => (
+            <div className="card" key={p.id}>
+              <div className="emoji-tile">{p.emoji}</div>
+              <h3>{p.name}</h3>
+              <div className="price">₹{p.price}</div>
+              <button className="btn btn-gold" onClick={() => addToCart(p)}>
+                ➕ Add to cart
+              </button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {cartCount > 0 && !showCart && (
+        <div className="sticky-bar">
+          <span>{cartCount} item{cartCount > 1 ? 's' : ''} · ₹{cartTotal}</span>
+          <button className="btn btn-gold" onClick={() => setShowCart(true)}>View cart</button>
+        </div>
+      )}
+
+      {showCart && (
+        <div className="cart-overlay" onClick={() => setShowCart(false)}>
+          <div className="cart-drawer" onClick={e => e.stopPropagation()}>
+            <h3 className="display">
+              Your cart
+              <button className="cart-btn" style={{ color: 'var(--ink)' }} onClick={() => setShowCart(false)} aria-label="Close cart">✕</button>
+            </h3>
+            {cart.length === 0 ? (
+              <p className="hint">Your cart is empty. Add a product to get started.</p>
+            ) : (
+              <>
+                {cart.map(i => (
+                  <div className="cart-item" key={i.id}>
+                    <div>
+                      <div>{i.emoji} {i.name}</div>
+                      <div className="hint">₹{i.price} each</div>
+                    </div>
+                    <div className="qty-ctrl">
+                      <button onClick={() => changeQty(i.id, -1)}>−</button>
+                      <span>{i.qty}</span>
+                      <button onClick={() => changeQty(i.id, 1)}>+</button>
+                    </div>
+                  </div>
+                ))}
+                <div className="cart-total"><span>Total</span><span>₹{cartTotal}</span></div>
+                <a className="btn btn-gold" style={{ width: '100%', justifyContent: 'center', marginTop: 16 }} href={checkoutLink()} target="_blank" rel="noopener noreferrer">
+                  💬 Order via WhatsApp
+                </a>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
+      {showInstall && (
+        <div className="install-banner">
+          <span>Install {BRAND} on your phone for one-tap access.</span>
+          <button onClick={handleInstall}>Install</button>
+        </div>
+      )}
+
+      <footer>
+        <div className="brand display">{BRAND}</div>
+        <p>Made with care · replace the WhatsApp number and details before sharing</p>
+      </footer>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<HealingApp />);
+</script>
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('service-worker.js').catch(() => {});
+    });
+  }
+</script>
+</body>
+</html>
